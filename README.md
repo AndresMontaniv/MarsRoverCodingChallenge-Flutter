@@ -53,7 +53,7 @@ Assume that the square directly North from (x, y) is (x, y+1).
 
 ### Running the Application
 
-On Mobile
+On Mobile (Android and IOS)
 1. Connect your mobile device or start an emulator.
 2. Run the application:
 
@@ -65,6 +65,19 @@ On Web
 
    ```sh
    flutter run -d chrome
+   ```
+On MacOs
+1. Run the application:
+
+   ```sh
+   flutter run -d macos
+   ```
+
+On Windows
+1. Run the application:
+
+   ```sh
+   flutter run -d windows
    ```
 
 ### Usage
