@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
 1 2 N
 LMLMLMLMM
 3 3 E
-MMRMMRMRRma''';
+MMRMMRMRRm''';
 
     // Reset Values
     outputStr = null;

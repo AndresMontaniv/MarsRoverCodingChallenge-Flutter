@@ -59,20 +59,39 @@ class Rover {
     }
   }
 
+  /// Calculates the last position of the rover after executing all commands.
+  ///
+  /// This method processes the rover's commands sequentially and updates its position and direction.
+  /// If at any point the rover goes out of the specified bounds, it returns an "Out of Bound!" message.
+  ///
+  /// - Parameters:
+  ///   - maxRow: The maximum allowable row the rover can be in.
+  ///   - maxCol: The maximum allowable column the rover can be in.
+  /// - Returns: A `Future` that resolves to a `String` representing the final position and direction of the rover
+  ///            or an "Out of Bound!" message if the rover goes out of bounds.
+  /// - Throws: `RoverException` if an error occurs while processing the commands.
   Future<String> getLastPosition(int maxRow, int maxCol) async {
+    // Simulate a delay for processing the commands
     await Future.delayed(const Duration(milliseconds: 200));
+
+    // Message to return if the rover goes out of bounds
     const outOfBoundMsg = 'Out of Bound!';
+
     try {
+      // Initialize position and direction
       int x = initialPosition.$1;
       int y = initialPosition.$2;
       RoverDirection direction = initialDirection;
 
+      // Check if the initial position is out of bounds
       if (x < 0 || x > maxRow || y < 0 || y > maxCol) {
         return outOfBoundMsg;
       }
 
+      // Create a queue from the commands
       Queue<RoverCommand> commandQueue = Queue<RoverCommand>.from(commands);
 
+      // Process each command in the queue
       while (commandQueue.isNotEmpty) {
         final command = commandQueue.removeFirst();
         switch (command) {
@@ -105,8 +124,10 @@ class Rover {
         }
       }
 
+      // Return the final position and direction of the rover
       return '$x $y ${direction.label}';
     } catch (e) {
+      // Throw a custom exception if an error occurs
       throw RoverException('An error occurred while getting the last position.');
     }
   }
