@@ -43,13 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // Unfocus TextField
     FocusScope.of(context).unfocus();
 
-    // TODO: remove this
-    inputCtrl.text = '''5 5
-1 2 N
-LMLMLMLMM
-3 3 E
-MMRMMRMRRm''';
-
     // Reset Values
     outputStr = null;
     errorMsg = null;
@@ -138,6 +131,7 @@ MMRMMRMRRm''';
                   child: TextField(
                     maxLines: 10,
                     controller: inputCtrl,
+                    textCapitalization: TextCapitalization.characters,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                     ),
