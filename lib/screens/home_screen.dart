@@ -120,57 +120,64 @@ MMRMMRMRRm''';
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
           vertical: 30,
-          horizontal: 10,
+          horizontal: 15,
         ),
-        child: Column(
-          children: [
-            Text(
-              'Input',
-              style: Theme.of(context).textTheme.displaySmall,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 700,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 30),
-              child: TextField(
-                maxLines: 5,
-                controller: inputCtrl,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            if (errorMsg != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Text(
-                  errorMsg!,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Column(
               children: [
-                if (inputCtrl.text.trim().isNotEmpty)
-                  ElevatedButton(
-                    onPressed: isLoading ? null : clearInputField,
-                    style: const ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.grey),
-                      foregroundColor: WidgetStatePropertyAll(Colors.white),
-                    ),
-                    child: const Text('Clear'),
-                  ),
-                ElevatedButton(
-                  onPressed: isLoading ? null : processData,
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.blue),
-                    foregroundColor: WidgetStatePropertyAll(Colors.white),
-                  ),
-                  child: const Text('Submit'),
+                Text(
+                  'Input',
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 30),
+                  child: TextField(
+                    maxLines: 10,
+                    controller: inputCtrl,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                if (errorMsg != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: Text(
+                      errorMsg!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    if (inputCtrl.text.trim().isNotEmpty)
+                      ElevatedButton(
+                        onPressed: isLoading ? null : clearInputField,
+                        style: const ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(Colors.grey),
+                          foregroundColor: WidgetStatePropertyAll(Colors.white),
+                        ),
+                        child: const Text('Clear'),
+                      ),
+                    ElevatedButton(
+                      onPressed: isLoading ? null : processData,
+                      style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.blue),
+                        foregroundColor: WidgetStatePropertyAll(Colors.white),
+                      ),
+                      child: const Text('Submit'),
+                    ),
+                  ],
+                ),
+                if (isLoading || outputStr != null) buildOutputView(),
               ],
             ),
-            if (isLoading || outputStr != null) buildOutputView(),
-          ],
+          ),
         ),
       ),
     );
