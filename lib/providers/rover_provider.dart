@@ -71,6 +71,7 @@ MMRMMRMRRM''';
       final roversInputLines = inputLines.sublist(1);
       rovers.clear();
       rovers = ListRoverParsing.fromList(roversInputLines);
+      await Future.delayed(const Duration(seconds: 1));
     } catch (e) {
       errorMsg = e.toString();
     }

@@ -23,7 +23,7 @@ class CustomMaterialButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       padding: const EdgeInsets.symmetric(
-        vertical: 10,
+        vertical: 15,
         horizontal: 10,
       ),
       color: color,

@@ -109,11 +109,6 @@ class _InputScreenState extends State<InputScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 40),
-                      Text(
-                        'Ready to go => ${roverProvider.roversLoaded}',
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
                     ],
                   ),
                 ),
@@ -123,10 +118,15 @@ class _InputScreenState extends State<InputScreen> {
               hasScrollBody: false,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: CustomMaterialButton(
-                  title: 'Ready to go',
-                  onPressed: () {},
-                ),
+                child: roverProvider.isLoading
+                    ? const CircularProgressIndicator()
+                    : roverProvider.roversLoaded > 0
+                        ? CustomMaterialButton(
+                            title: 'Continue with ${roverProvider.roversLoaded} rovers',
+                            color: Colors.blue.shade800,
+                            onPressed: () {},
+                          )
+                        : null,
               ),
             ),
           ],
