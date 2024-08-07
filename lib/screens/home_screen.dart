@@ -27,13 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
     values.removeWhere((e) => e.isEmpty);
     if (values.length < 3 || values.length % 2 == 0) {
       return Future.error(
-        ArgumentError('The input String must have an odd number of lines (at least 3), 1 for the the gridsize and 2 for every rover'),
+        RoverInputError('The input String must have an odd number of lines (at least 3), 1 for the the gridsize and 2 for every rover'),
       );
     }
 
     // Check gridSize input
     if (!RegExp(r'^\d+\s\d+$').hasMatch(values.firstOrNull ?? '')) {
-      return Future.error(ArgumentError('The first line of the Input must have 2 elements, each element must be a non negative number'));
+      return Future.error(RoverInputError('The first line of the Input must have 2 elements, each element must be a non negative number'));
     }
 
     return values;
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final y = int.parse(gridSize[1]);
 
       if (x < 0 || y < 0) {
-        throw ArgumentError("maxRow and maxCol can't be negative");
+        throw RoverInputError("maxRow and maxCol can't be negative");
       }
 
       // Build sublists and Parse rovers
@@ -83,15 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
         outputStr = '${outputStr ?? ''}===========';
       }
     } catch (e) {
-      if (e is ArgumentError) {
-        errorMsg = e.message.toString();
-      } else if (e is FormatException) {
-        errorMsg = e.message;
-      } else if (e is RoverException) {
-        errorMsg = e.message;
-      } else {
-        errorMsg = e.toString();
-      }
+      errorMsg = e.toString();
     }
     setLoading(false);
   }
@@ -108,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mars Rover Coding Challenge'),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(

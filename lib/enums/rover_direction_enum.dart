@@ -1,3 +1,5 @@
+import '../models/models.dart';
+
 /// Enum representing the possible directions a rover can face.
 enum RoverDirection {
   north,
@@ -49,8 +51,13 @@ enum RoverDirection {
 
   /// Converts a string to the corresponding [RoverDirection] enum value.
   ///
-  /// Throws [ArgumentError] if the string does not represent a valid direction.
+  /// Throws [RoverInputError] if the string does not represent a valid direction.
   static RoverDirection fromString(String s) {
+    final valueUpperCase = s.toUpperCase();
+    final validCommandPattern = RegExp(r'^[LRM]$');
+    if (!validCommandPattern.hasMatch(valueUpperCase)) {
+      throw RoverInputError('Command can only contain the letters N, E, W, S', valueUpperCase);
+    }
     switch (s.toUpperCase()) {
       case 'N':
         return RoverDirection.north;
@@ -61,6 +68,6 @@ enum RoverDirection {
       case 'S':
         return RoverDirection.south;
     }
-    throw ArgumentError("Invalid direction: $s, options are [N, E, W, S]");
+    throw RoverInputError("Invalid direction: $s, options are [N, E, W, S]");
   }
 }

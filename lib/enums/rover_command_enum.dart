@@ -1,3 +1,5 @@
+import '../models/models.dart';
+
 /// Enum representing the possible commands a rover can read.
 enum RoverCommand {
   left,
@@ -23,7 +25,7 @@ enum RoverCommand {
     final valueUpperCase = s.toUpperCase();
     final validCommandPattern = RegExp(r'^[LRM]$');
     if (!validCommandPattern.hasMatch(valueUpperCase)) {
-      throw FormatException("Command can only contain the letters L, R, or M.\n'$valueUpperCase is not valid.");
+      throw RoverInputError('Command can only contain the letters L, R, or M', valueUpperCase);
     }
     switch (valueUpperCase) {
       case 'L':
@@ -33,7 +35,7 @@ enum RoverCommand {
       case 'M':
         return RoverCommand.move;
     }
-    throw FormatException("Invalid command: $s, options are [L, R, M]");
+    throw RoverInputError('Options are [L, R, M]', valueUpperCase);
   }
 }
 
@@ -44,7 +46,7 @@ extension ParseIterableRoverCommand on Iterable<RoverCommand> {
   /// The input string should contain commands consisting of the letters 'L', 'R', and 'M'.
   /// Each command represents a specific action for the rover.
   /// The string can contain spaces, which will be ignored.
-  /// Throws a `FormatException` if the string contains invalid commands or is empty.
+  /// Throws a `RoverInputError` if the string contains invalid commands or is empty.
   ///
   /// Example:
   /// ```dart
@@ -62,12 +64,12 @@ extension ParseIterableRoverCommand on Iterable<RoverCommand> {
 
     // Check if the input is empty
     if (valueNoSpaces.isEmpty) {
-      throw const FormatException("Commands must have at least 1 letter and can only contain the letters L, R, or M.");
+      throw RoverInputError("Commands must have at least 1 letter and can only contain the letters L, R, or M.");
     }
 
     // Validate the commands against the pattern
     if (!validCommandsPattern.hasMatch(valueNoSpaces)) {
-      throw FormatException("Command can only contain the letters L, R, or M.\n'$valueNoSpaces is not valid.");
+      throw RoverInputError('Command can only contain the letters L, R, or M', valueNoSpaces);
     }
 
     // Convert the string to a list of `RoverCommand`

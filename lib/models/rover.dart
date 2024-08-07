@@ -23,32 +23,32 @@ class Rover {
   /// 1. A string representing the initial position and direction in the format "X Y D".
   /// 2. A string containing the commands.
   ///
-  /// Throws [AssertionError] if the input is invalid.
+  /// Throws [RoverInputError] if the input is invalid.
   factory Rover.fromIterableParam(List<String> params) {
     try {
       if (params.length != 2) {
-        throw ArgumentError('Iterable must contain 2 elements');
+        throw RoverInputError('Iterable must contain 2 elements');
       }
 
       final positionAndDirection = params[0].split(' ');
       positionAndDirection.removeWhere((e) => e.isEmpty);
       if (positionAndDirection.length != 3) {
-        throw ArgumentError('Position and direction must contain 3 words: X Y D');
+        throw RoverInputError('Position and direction must contain 3 words: X Y D');
       }
 
       final x = int.tryParse(positionAndDirection[0]);
       if (x == null || x < 0) {
-        throw ArgumentError("The value of x must be an integer greater or equal to 0.\n'$x' is not valid");
+        throw RoverInputError('The value of x must be an integer greater or equal to 0', positionAndDirection[0]);
       }
 
       final y = int.tryParse(positionAndDirection[1]);
       if (y == null || y < 0) {
-        throw ArgumentError("The value of y must be an integer greater or equal to 0.\n'$y' is not valid");
+        throw RoverInputError('The value of y must be an integer greater or equal to 0', positionAndDirection[1]);
       }
 
       final direction = positionAndDirection[2].toUpperCase();
       if (direction.length != 1 || !'NEWS'.contains(direction)) {
-        throw ArgumentError("The direction must be a single letter: N, E, W, or S.\n '$direction' is not valid.");
+        throw RoverInputError('The direction must be a single letter: N, E, W, or S', direction);
       }
 
       final commands = ParseIterableRoverCommand.fromString(params[1]);
