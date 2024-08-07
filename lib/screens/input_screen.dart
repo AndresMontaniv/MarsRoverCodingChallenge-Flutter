@@ -50,15 +50,13 @@ class _InputScreenState extends State<InputScreen> {
           vertical: 30,
           horizontal: 15,
         ),
-        child: CustomScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          slivers: [
-            SliverToBoxAdapter(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxWidth: 700,
-                  ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 700),
+            child: CustomScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              slivers: [
+                SliverToBoxAdapter(
                   child: Column(
                     children: [
                       Text(
@@ -112,24 +110,24 @@ class _InputScreenState extends State<InputScreen> {
                     ],
                   ),
                 ),
-              ),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: roverProvider.isLoading
+                        ? const CircularProgressIndicator()
+                        : roverProvider.roversLoaded > 0
+                            ? CustomMaterialButton(
+                                title: 'Continue with ${roverProvider.roversLoaded} rovers',
+                                color: Colors.blue.shade800,
+                                onPressed: () {},
+                              )
+                            : null,
+                  ),
+                ),
+              ],
             ),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: roverProvider.isLoading
-                    ? const CircularProgressIndicator()
-                    : roverProvider.roversLoaded > 0
-                        ? CustomMaterialButton(
-                            title: 'Continue with ${roverProvider.roversLoaded} rovers',
-                            color: Colors.blue.shade800,
-                            onPressed: () {},
-                          )
-                        : null,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

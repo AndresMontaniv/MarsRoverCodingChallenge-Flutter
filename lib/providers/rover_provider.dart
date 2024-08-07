@@ -1,16 +1,42 @@
 import 'package:flutter/material.dart';
+import '../enums/enums.dart';
 
 import '../models/models.dart';
 
 class RoverProvider extends ChangeNotifier {
+  static const squareMinSize = 30.0;
   bool _isLoading = false;
-  List<Rover> rovers = [];
+  //TODO: remove hardcode
+  List<Rover> rovers = [
+    Rover(
+      (1, 2),
+      RoverDirection.north,
+      [
+        RoverCommand.left,
+        RoverCommand.move,
+        RoverCommand.left,
+        RoverCommand.move,
+        RoverCommand.left,
+        RoverCommand.move,
+        RoverCommand.move,
+      ],
+    ),
+  ];
   String? errorMsg;
+  //TODO: remove hardcode
   String? inputStr = '''5 5
 1 2 N
 LMLMLMLMM
 3 3 E
 MMRMMRMRRM''';
+
+  static int calculateMaxItems(double maxSize) {
+    int count = 0;
+    while ((maxSize / (count + 1)) >= squareMinSize) {
+      count++;
+    }
+    return count;
+  }
 
   int get roversLoaded => rovers.length;
 
@@ -27,7 +53,7 @@ MMRMMRMRRM''';
     notifyListeners();
   }
 
-  Future<List<String>> inputValidator() async {
+  Future<List<String>> _inputValidator() async {
     if (inputStr?.isEmpty ?? true) {
       return Future.error(
         RoverInputError("The input String can't be empty"),
@@ -56,7 +82,7 @@ MMRMMRMRRM''';
 
     try {
       // Load Input
-      final inputLines = await inputValidator();
+      final inputLines = await _inputValidator();
 
       // Initialize gridsize (x,y)
       List<String> gridSize = inputLines.firstOrNull!.split(' ');

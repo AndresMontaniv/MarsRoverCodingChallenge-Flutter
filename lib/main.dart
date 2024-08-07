@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
             centerTitle: true,
           ),
         ),
-        home: const InputScreen(),
+        home: const BoardScreen(),
       ),
     );
   }
