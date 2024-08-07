@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/widgets.dart';
 import '../providers/rover_provider.dart';
 
 class InputScreen extends StatefulWidget {
@@ -43,76 +45,91 @@ class _InputScreenState extends State<InputScreen> {
       appBar: AppBar(
         title: const Text('BoardGame Style'),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 30,
           horizontal: 15,
         ),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 700,
-            ),
-            child: Column(
-              children: [
-                Text(
-                  'Input',
-                  style: Theme.of(context).textTheme.displaySmall,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 30),
-                  child: TextField(
-                    maxLines: 10,
-                    controller: inputCtrl,
-                    enabled: !roverProvider.isLoading,
-                    textCapitalization: TextCapitalization.characters,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) => roverProvider.inputStr = value,
+        child: CustomScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          slivers: [
+            SliverToBoxAdapter(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: 700,
                   ),
-                ),
-                if (roverProvider.errorMsg != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: Text(
-                      roverProvider.errorMsg!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    if (inputCtrl.text.trim().isNotEmpty)
-                      ElevatedButton(
-                        onPressed: roverProvider.isLoading ? null : clearInputField,
-                        style: const ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(Colors.grey),
-                          foregroundColor: WidgetStatePropertyAll(Colors.white),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Input',
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 30),
+                        child: TextField(
+                          maxLines: 10,
+                          controller: inputCtrl,
+                          enabled: !roverProvider.isLoading,
+                          textCapitalization: TextCapitalization.characters,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (value) => roverProvider.inputStr = value,
                         ),
-                        child: const Text('Clear'),
                       ),
-                    ElevatedButton(
-                      onPressed: roverProvider.isLoading ? null : loadData,
-                      style: const ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.blue),
-                        foregroundColor: WidgetStatePropertyAll(Colors.white),
+                      if (roverProvider.errorMsg != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: Text(
+                            roverProvider.errorMsg!,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          if (inputCtrl.text.trim().isNotEmpty)
+                            ElevatedButton(
+                              onPressed: roverProvider.isLoading ? null : clearInputField,
+                              style: const ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(Colors.grey),
+                                foregroundColor: WidgetStatePropertyAll(Colors.white),
+                              ),
+                              child: const Text('Clear'),
+                            ),
+                          ElevatedButton(
+                            onPressed: roverProvider.isLoading ? null : loadData,
+                            style: const ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll(Colors.blue),
+                              foregroundColor: WidgetStatePropertyAll(Colors.white),
+                            ),
+                            child: const Text('Submit'),
+                          ),
+                        ],
                       ),
-                      child: const Text('Submit'),
-                    ),
-                  ],
+                      const SizedBox(height: 40),
+                      Text(
+                        'Ready to go => ${roverProvider.roversLoaded}',
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 40),
-                Text(
-                  'Ready to go => ${roverProvider.roversLoaded}',
-                  style: Theme.of(context).textTheme.displaySmall,
-                ),
-
-                
-              ],
+              ),
             ),
-          ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: CustomMaterialButton(
+                  title: 'Ready to go',
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
