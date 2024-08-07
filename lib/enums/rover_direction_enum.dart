@@ -54,7 +54,7 @@ enum RoverDirection {
   /// Throws [RoverInputError] if the string does not represent a valid direction.
   static RoverDirection fromString(String s) {
     final valueUpperCase = s.toUpperCase();
-    final validCommandPattern = RegExp(r'^[LRM]$');
+    final validCommandPattern = RegExp(r'^[NEWS]$');
     if (!validCommandPattern.hasMatch(valueUpperCase)) {
       throw RoverInputError('Command can only contain the letters N, E, W, S', valueUpperCase);
     }

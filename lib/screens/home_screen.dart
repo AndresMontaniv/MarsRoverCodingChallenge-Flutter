@@ -121,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.only(top: 20, bottom: 30),
                   child: TextField(
                     maxLines: 10,
+                    enabled: !isLoading,
                     controller: inputCtrl,
                     textCapitalization: TextCapitalization.characters,
                     decoration: const InputDecoration(

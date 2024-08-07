@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import '../enums/enums.dart';
@@ -129,6 +130,26 @@ class Rover {
     } catch (e) {
       // Throw a custom exception if an error occurs
       throw RoverException('An error occurred while getting the last position.');
+    }
+  }
+}
+
+extension ListRoverParsing on List<Rover> {
+  static List<Rover> fromList(List<String> list) {
+    if (list.length < 2 || list.length % 2 != 0) {
+      throw RoverInputError('The input String must contain 2 lines for every rover');
+    }
+    try {
+      List<Rover> rovers = [];
+      for (var i = 0; i < list.length; i += 2) {
+        final end = i + 2;
+        if (end <= list.length) {
+          rovers.add(Rover.fromIterableParam(list.sublist(i, end)));
+        }
+      }
+      return rovers;
+    } catch (e) {
+      rethrow;
     }
   }
 }
