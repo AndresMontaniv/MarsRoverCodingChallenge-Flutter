@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../providers/rover_provider.dart';
+import '../enums/enums.dart';
 import '../widgets/widgets.dart';
+import '../providers/rover_provider.dart';
 
-class BoardScreen extends StatelessWidget {
+class BoardScreen extends StatefulWidget {
   static const name = 'BoardScreen';
 
   const BoardScreen({super.key});
+
+  @override
+  State<BoardScreen> createState() => _BoardScreenState();
+}
+
+class _BoardScreenState extends State<BoardScreen> {
+  RoverDirection currentDirection = RoverDirection.south;
+  double currentX = 0;
+  double currentY = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +32,12 @@ class BoardScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Text(
-                'Rover 1 => (1 ,2) N',
-                style: Theme.of(context).textTheme.displaySmall,
+                'Rover 1 => ($currentX ,$currentY) ${currentDirection.label}',
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
 
-            // Here I want to know how tall this Sizedbox can be. The layoutbuilder return maxHeight = infinity
+            // Board
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constrains) {
@@ -38,32 +48,32 @@ class BoardScreen extends StatelessWidget {
                   int maxRows = RoverProvider.calculateMaxItems(maxHeight);
 
                   print('Max rows, cols => $maxRows , $maxColumns');
-                  // return Container(
-                  //   width: maxWidth,
-                  //   height: maxHeight,
-                  //   color: Colors.lightBlue,
-                  // );
 
-                  return Stack(
-                    children: [
-                      CustomPaint(
-                        size: Size(maxWidth, maxHeight),
-                        painter: GridPainter(
-                          maxColumns,
-                          maxRows,
-                          RoverProvider.squareMinSize,
-                        ),
-                      ),
-                      const Positioned(
-                        left: 0,
-                        top: 30,
-                        child: Icon(
-                          Icons.arrow_back,
-                          size: 30,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
+                  double pieceWidth = maxWidth / maxColumns;
+                  double pieceHeight = maxHeight / maxRows;
+
+                  print('size $pieceWidth, $pieceHeight');
+
+                  return Column(
+                    verticalDirection: VerticalDirection.up,
+                    children: List.generate(maxRows, (rowIndex) {
+                      return Row(
+                        children: List.generate(maxColumns, (colIndex) {
+                          int x = colIndex;
+                          int y = (maxRows - 1) - rowIndex;
+
+                          print('rxa => $x, $y');
+
+                          return BoardPositionSquare(
+                            size: 31,
+                            position: (x, y),
+                            isLastCol: x == maxColumns - 1,
+                            isLastRow: y == maxRows - 1,
+                            direction: x == currentX && y == currentY ? currentDirection : null,
+                          );
+                        }),
+                      );
+                    }),
                   );
                 },
               ),
@@ -78,7 +88,11 @@ class BoardScreen extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.arrow_circle_left_outlined),
                     iconSize: 50,
-                    onPressed: () {},
+                    onPressed: () {
+                      currentDirection = RoverDirection.west;
+                      currentX--;
+                      setState(() {});
+                    },
                   ),
                   Column(
                     mainAxisSize: MainAxisSize.min,
@@ -86,19 +100,31 @@ class BoardScreen extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.arrow_circle_up_outlined),
                         iconSize: 50,
-                        onPressed: () {},
+                        onPressed: () {
+                          currentDirection = RoverDirection.north;
+                          currentY--;
+                          setState(() {});
+                        },
                       ),
                       IconButton(
                         icon: const Icon(Icons.arrow_circle_down_outlined),
                         iconSize: 50,
-                        onPressed: () {},
+                        onPressed: () {
+                          currentDirection = RoverDirection.south;
+                          currentY++;
+                          setState(() {});
+                        },
                       ),
                     ],
                   ),
                   IconButton(
                     icon: const Icon(Icons.arrow_circle_right_outlined),
                     iconSize: 50,
-                    onPressed: () {},
+                    onPressed: () {
+                      currentDirection = RoverDirection.east;
+                      currentX++;
+                      setState(() {});
+                    },
                   ),
                 ],
               ),
@@ -109,45 +135,3 @@ class BoardScreen extends StatelessWidget {
     );
   }
 }
-
-class GridPainter extends CustomPainter {
-  final int columns;
-  final int rows;
-  final double squareSize;
-
-  GridPainter(this.columns, this.rows, this.squareSize);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 1.0;
-
-    for (int i = 0; i <= columns; i++) {
-      double dx = i * (size.width / columns);
-      canvas.drawLine(Offset(dx, 0), Offset(dx, size.height), paint);
-    }
-
-    for (int i = 0; i <= rows; i++) {
-      double dy = i * (size.height / rows);
-      canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-
-
-
-
-                  // child: Column(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     BoardPositionSquare(size: maxWidth / 10, index: 0),
-                  //   ],
-                  // ),

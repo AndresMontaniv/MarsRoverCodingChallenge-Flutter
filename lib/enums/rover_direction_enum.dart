@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart' show Icons, IconData;
+
 import '../models/models.dart';
 
 /// Enum representing the possible directions a rover can face.
@@ -46,6 +48,19 @@ enum RoverDirection {
         return RoverDirection.north;
       case RoverDirection.south:
         return RoverDirection.west;
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case RoverDirection.north:
+        return Icons.arrow_upward;
+      case RoverDirection.east:
+        return Icons.arrow_forward;
+      case RoverDirection.west:
+        return Icons.arrow_back;
+      case RoverDirection.south:
+        return Icons.arrow_downward;
     }
   }
 
